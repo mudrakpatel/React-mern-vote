@@ -3,7 +3,7 @@ module.exports = {
 }
 
 module.exports.errors = (error, request, response, next) => {
-  response.status(error.status || 500).json({
+  response.status(error.status || 400).json({
     error: error.message || "Something went wrong!"
   });
 };
