@@ -1,10 +1,11 @@
 module.exports = {
-  ...require("./auth")
+  ...require("./auth"),
+  ...require("./poll")
 }
 
 module.exports.errors = (error, request, response, next) => {
   response.status(error.status || 400).json({
-    error: error.message || "Something went wrong!"
+    message: error.message || "Something went wrong!"
   });
 };
 

@@ -18,6 +18,7 @@ app.get("/", (request, response) => {
   response.json({value: "Hello world"});
 });
 app.use("/api/auth", routes.auth);
+app.use("/api/poll", routes.poll);
 
 app.use(handle.notFound);
 app.use(handle.errors);
