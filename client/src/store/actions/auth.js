@@ -13,7 +13,7 @@ export const setToken = (token) => {
   } else{
     console.log("No token found");
   }
-}
+};
 
 export const logout = () => {
   return dispatch => {
@@ -25,25 +25,25 @@ export const logout = () => {
 }
 
 export const authUser = (path, data) => {
-  if(path && data){
+  //if(path && data){
     return async dispatch => {
       try {
         const {token, ...user} = await api.call("post", `auth/${path}`, data);
-        if(token && user){
+        //if(token && user){
           localStorage.setItem("jwtToken", token);
           console.log(`Token:>>> ${token}`);
           api.setToken(token);
           dispatch(setCurrentUser(user));
           dispatch(removeError());
-        }else{
-          console.log("Either token or user, one or both are missing!");
-        }
-      } catch(error) {
-        const {errorData} = error.response.data;
-        dispatch(addError(errorData));
+        // }else{
+        //   console.log("Either token or user, one or both are missing!");
+        // }
+      } catch(err) {
+        const error = err.response.data;
+        dispatch(addError(error));
       }
     }
-  }else{
-    console.log("Either path or data, one or both are missing!");
-  }
-}
+  // }else{
+  //   console.log("Either path or data, one or both are missing!");
+  // }
+};
