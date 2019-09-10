@@ -28,13 +28,22 @@ export const authUser = (path, data) => {
   //if(path && data){
     return async dispatch => {
       try {
-        const {token, ...user} = await api.call("post", `auth/${path}`, data);
+        console.log(data);
+        const {...user} = await api.call("post", `auth/${path}`, data);
         //if(token && user){
-          localStorage.setItem("jwtToken", token);
-          console.log(`Token:>>> ${token}`);
-          api.setToken(token);
+          //window.localStorage.setItem("jsonWebToken", token);
+
+          localStorage.setItem("jsonWebToken", user.data.token);
+          //console.log(`Token:>>> ${user.data.token}`);
+          api.setToken(user.data.token);
           dispatch(setCurrentUser(user));
           dispatch(removeError());
+
+          // console.log("Logging jsonWebToken...");
+          // console.log(user.data.token);
+          // console.log(user);
+          // console.log("Logging finished - jsonWebToken.");
+
         // }else{
         //   console.log("Either token or user, one or both are missing!");
         // }

@@ -1,34 +1,37 @@
 //import React, { Component } from 'react';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Provider} from "react-redux";
+import {BrowserRouter as Router} from "react-router-dom";
 import decode from "jwt-decode";
 
-// import api from '../services/api';
 import {store} from '../store';
-import {setCurrentUser, addError, setToken} from "../store/actions";
-import Auth from "../components/Auth";
-import ErrorMessage from '../components/ErrorMessage';
+import {setToken, setCurrentUser, addError} from "../store/actions";
 
-if(localStorage.jwtToken){
-  setToken(localStorage.jwtToken);
-  console.log(`localStorage.jwtToken:>>> ${localStorage.jwtToken}`);
-  try{
-    console.log(`Decoded localStorage.jwtToken:>>> ${decode(localStorage.jwtToken)}`);
-    store.dispatch(setCurrentUser(decode(localStorage.jwtToken)));
-  }catch(error){
-    store.dispatch(setCurrentUser({}));
-    store.dispatch(addError(error));
-  }
+import NavBar from './NavBar';
+import RouteViews from './RouteViews';
+
+if(localStorage.jsonWebToken){
+    setToken(localStorage.jsonWebToken);
+    console.log(`localStorage.jsonWebToken:>>> ${localStorage.jsonWebToken}`);
+    try{
+      store.dispatch(setCurrentUser(decode(localStorage.jsonWebToken)));
+    }catch(error){
+      store.dispatch(setCurrentUser({}));
+      store.dispatch(addError(error));
+    }
 }else{
   console.log("No token found in localStorage!");
 }
 
 const App = () => (
   <Provider store={store}>
-    <div>
-      <Auth authType={"login"}/>
-      <ErrorMessage/>
-    </div>
+    <Router>
+      <Fragment>
+
+        <NavBar/>
+        <RouteViews/>
+      </Fragment>
+    </Router>
   </Provider>
 );
 

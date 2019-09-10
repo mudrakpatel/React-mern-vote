@@ -1,11 +1,11 @@
-const jasonWebToken = require("jsonwebtoken");
 const db = require("../models");
+const jsonWebToken = require("jsonwebtoken");
 
 exports.register = async (request, response, next) => {
   try{
     const user = await db.User.create(request.body);
     const {id, username} = user;
-    const token = jasonWebToken.sign({id, username}, process.env.SECRET);
+    const token = jsonWebToken.sign({id, username}, process.env.SECRET);
 
     response.status(201).json({
       id,
@@ -23,16 +23,20 @@ exports.register = async (request, response, next) => {
 
 exports.login = async (request, response, next) => {
   try{
-    const user = await db.User.findOne({username: request.body.username});
+    const user = await db.User.findOne({
+      username: request.body.username
+    });
     const {id, username} = user;
     const valid = await user.comparePassword(request.body.password);
+    //console.log(`Valid log auth.js - server/handlersS:>>> ${valid}`);
     if(valid){
-      const token = jasonWebToken.sign({id, username}, process.env.SECRET);
-      response.json({
-        id,
-        username,
-        token
-      });
+      const token = jsonWebToken.sign({id, username}, process.env.SECRET);
+      //console.log(`Token log from auth.js - server/handlers:>>> ${token}`);
+      return response.status(200).json({
+              id,
+              username,
+              token
+            });
     } else {
       throw new Error("Invalid Username/Password");
     }
@@ -40,4 +44,4 @@ exports.login = async (request, response, next) => {
     error.message = "Invalid Username/Password";
     next(error);
   }
-}
+};

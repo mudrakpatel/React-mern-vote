@@ -1,8 +1,8 @@
 const jsonWebToken = require("jsonwebtoken");
 
 module.exports = (request, response, next) => {
-  if(request.headers.authorization){
-    const token = request.headers.authorization.split(" ")[1];
+  if(request.headers["authorization"]){
+    const token = request.headers["authorization"].split(" ")[1];
     jsonWebToken.verify(token,
       process.env.SECRET,
       (error, decoded) => {
