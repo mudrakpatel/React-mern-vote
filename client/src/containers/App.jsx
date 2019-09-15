@@ -10,11 +10,13 @@ import {setToken, setCurrentUser, addError} from "../store/actions";
 import NavBar from './NavBar';
 import RouteViews from './RouteViews';
 
-if(localStorage.jsonWebToken){
-    setToken(localStorage.jsonWebToken);
-    console.log(`localStorage.jsonWebToken:>>> ${localStorage.jsonWebToken}`);
+if(localStorage.getItem("jsonWebToken")){
+    //setToken(localStorage.jsonWebToken);
+    const jsonWebToken = localStorage.getItem("jsonWebToken");
+    console.log(`jsonWebToken:>>> ${jsonWebToken}`);
+    setToken(jsonWebToken);
     try{
-      store.dispatch(setCurrentUser(decode(localStorage.jsonWebToken)));
+      store.dispatch(setCurrentUser(decode(jsonWebToken)));
     }catch(error){
       store.dispatch(setCurrentUser({}));
       store.dispatch(addError(error));

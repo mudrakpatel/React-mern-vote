@@ -17,14 +17,18 @@ exports.showPolls = async (request, response, next) => {
 };
 
 exports.usersPolls = async (request, response, next) => {
+  const {id} = request.decoded;
+  console.log(`User id:>>> ${id}`);
   try{
-    const {id} = request.decoded;
-
-    const user = await db.User.
-                 findById(id).
-                 populate("polls");
-
-    response.status(200).json(user.polls);
+    // const polls = await db.User.findById(id).populate("polls");
+    // console.log(`User polls: >>> ${polls}`);
+    //return response.status(200).json(user.polls);
+    //return response.status(200).json(polls);
+    //const user = await db.User.findById(id).populate("polls");
+    const user = await db.User.findById(id.toString()).populate("polls");
+    console.log(user.polls);
+    //return response.status(200).json(user.polls);
+    return response.status(200).json(user.polls);
   }catch(error){
     error.status = 400;
     next(error);
